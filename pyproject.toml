@@ -1,0 +1,44 @@
+[tool.poetry]
+name = "key-rotation"
+version = "0.1.0"
+description = ""
+authors = ["Brock Friedrich <brocklfriedrich@gmail.com>"]
+
+[tool.poetry.dependencies]
+python = "^3.7"
+chalice = "^1.12.0"
+tomlkit = "^0.5.8"
+json_log_formatter = "^0.2.0"
+boto3 = "^1.10.44"
+starlette = "^0.13.2"
+asyncpg = "^0.20.1"
+gino = "^0.8.6"
+logutils = "^0.3.5"
+httpx = "^0.12.1"
+pandas = "^1.0.3"
+
+
+[tool.poetry.dev-dependencies]
+black = {version = "^19.10b0", allow-prereleases = true}
+mypy = "^0.761"
+flake8 = "^3.7.9"
+ipython = "^7.11.1"
+pytest = "^5.3.2"
+pytest-cov = "^2.8.1"
+requests-mock = "^1.7.0"
+codecov = "^2.0.15"
+python-dotenv = "^0.12.0"
+
+[tool.poetry.scripts]
+
+[tool.isort]
+multi_line_output=3
+include_trailing_comma=true
+force_grid_wrap=0
+use_parentheses=true
+line_length=88
+known_third_party = ["boto3", "chalice", "config", "db", "gino", "httpx", "json_log_formatter", "loggers", "logutils", "pandas", "sqlalchemy", "ssm", "starlette", "tomlkit", "util"]
+
+[build-system]
+requires = ["poetry>=0.12"]
+build-backend = "poetry.masonry.api"

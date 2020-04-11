@@ -37,7 +37,7 @@ include_trailing_comma=true
 force_grid_wrap=0
 use_parentheses=true
 line_length=88
-known_third_party = ["boto3", "chalice", "config", "db", "gino", "httpx", "json_log_formatter", "key_rotation", "loggers", "logutils", "pandas", "sqlalchemy", "ssm", "starlette", "tomlkit", "util"]
+known_third_party = ["boto3", "chalice", "config", "db", "gino", "httpx", "json_log_formatter", "key_rotation", "loggers", "logutils", "pandas", "ssm", "starlette", "tomlkit", "util"]
 
 [build-system]
 requires = ["poetry>=0.12"]

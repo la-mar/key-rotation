@@ -12,12 +12,10 @@ loggers.config(20)
 
 logger = logging.getLogger(__name__)
 
-TF_ORG_NAME: str = "deo"
-TF_IAM_USERNAME: str = "terraform-cloud"
 
 BASE_URL = httpx.URL("https://app.terraform.io/api/v2/")
 
-WORKSPACE_URL = BASE_URL.join(f"organizations/{TF_ORG_NAME}/workspaces")
+WORKSPACE_URL = BASE_URL.join(f"organizations/{conf.TF_ORG_NAME}/workspaces")
 VARS_URL = BASE_URL.join("vars/")
 
 HEADERS = {
@@ -37,7 +35,7 @@ class EntityType(str, Enum):
 
 
 def get_workspaces() -> pd.DataFrame:
-    logger.debug(f"({TF_ORG_NAME}) fetching workspaces: {WORKSPACE_URL}")
+    logger.debug(f"({conf.TF_ORG_NAME}) fetching workspaces: {WORKSPACE_URL}")
     response = httpx.get(WORKSPACE_URL, headers=HEADERS)
     workspaces = pd.DataFrame(response.json()["data"])  # type: ignore
     attrs = pd.DataFrame(workspaces.attributes.values.tolist())
@@ -62,12 +60,12 @@ def get_workspaces() -> pd.DataFrame:
         .rename(columns={"id": "workspace_id", "name": "workspace_name"})
         .set_index("workspace_id")
     )
-    logger.debug(f"({TF_ORG_NAME}) found {workspaces.shape[0]} workspaces")
+    logger.debug(f"({conf.TF_ORG_NAME}) found {workspaces.shape[0]} workspaces")
     return workspaces
 
 
 def get_variables() -> pd.DataFrame:
-    logger.debug(f"({TF_ORG_NAME}) fetching variables: {VARS_URL}")
+    logger.debug(f"({conf.TF_ORG_NAME}) fetching variables: {VARS_URL}")
     response = httpx.get(VARS_URL, headers=HEADERS)
     variables = pd.DataFrame(response.json()["data"])  # type: ignore
     attrs = pd.DataFrame(variables.attributes.values.tolist())
@@ -101,7 +99,7 @@ def get_variables() -> pd.DataFrame:
             ],
         ]
     )
-    logger.debug(f"({TF_ORG_NAME}) found {variables.shape[0]} variables")
+    logger.debug(f"({conf.TF_ORG_NAME}) found {variables.shape[0]} variables")
     return variables
 
 
@@ -215,7 +213,7 @@ class TFVar:
             response.raise_for_status()
         except httpx.HTTPError as e:
             logger.error(
-                f"({TF_IAM_USERNAME}) Error rotating credential: {self.id}/{self.key} -- {e}"
+                f"({conf.TF_IAM_USERNAME}) Error rotating credential: {self.id}/{self.key} -- {e}"
             )  # noqa
 
         return response
@@ -226,7 +224,7 @@ def rotate_keys():
     workspaces = get_workspaces()
     envs = None
 
-    with RotationManager(TF_IAM_USERNAME) as rm:
+    with RotationManager(conf.TF_IAM_USERNAME) as rm:
 
         credentials = rm.new
         var_levels = rm.descriptions
@@ -300,5 +298,5 @@ def rotate_keys():
             for var in tfvars:
                 var.send()
             logger.info(
-                f"({TF_IAM_USERNAME}) successfully rotated keys for workspace: {workspace_name}"
+                f"({conf.TF_IAM_USERNAME}) successfully rotated keys for workspace: {workspace_name}"  # noqa
             )

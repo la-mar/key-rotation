@@ -1,7 +1,6 @@
 from typing import Dict, Optional
 
 import pandas as pd
-from sqlalchemy.engine.url import URL
 from starlette.config import Config
 from starlette.datastructures import Secret
 from util.toml import project, version
@@ -32,28 +31,6 @@ LOG_FORMAT: str = conf("LOG_FORMAT", cast=str, default="json")
 LOG_HANDLER: str = conf("LOG_HANDLER", cast=str, default="colorized")
 
 
-""" database """
-DATABASE_DRIVER: str = conf("DATABASE_DRIVER", cast=str, default="postgresql+asyncpg")
-DATABASE_USERNAME: str = conf("DATABASE_USERNAME", cast=str, default=None)
-DATABASE_PASSWORD: Secret = conf("DATABASE_PASSWORD", cast=Secret, default=None)
-DATABASE_HOST: str = conf("DATABASE_HOST", cast=str, default="localhost")
-DATABASE_PORT: int = conf("DATABASE_PORT", cast=int, default=5432)
-DATABASE_NAME: str = conf("DATABASE_NAME", cast=str)
-DATABASE_POOL_SIZE_MIN: int = conf("DATABASE_POOL_SIZE_MIN", cast=int, default=2)
-DATABASE_POOL_SIZE_MAX: int = conf(
-    "DATABASE_POOL_SIZE_MIN", cast=int, default=DATABASE_POOL_SIZE_MIN
-)
-
-
-DATABASE_URI = URL(
-    drivername=DATABASE_DRIVER,
-    username=DATABASE_USERNAME,
-    password=DATABASE_PASSWORD,
-    host=DATABASE_HOST,
-    port=DATABASE_PORT,
-    database=DATABASE_NAME,
-)
-
 DATADOG_ENABLED: bool = conf("DATADOG_ENABLED", cast=bool, default=False)
 
 DATADOG_API_KEY: Optional[Secret] = conf(
@@ -76,3 +53,5 @@ DATADOG_DEFAULT_TAGS: Dict[str, Optional[str]] = {
 
 
 TF_TOKEN: Optional[Secret] = conf("TF_TOKEN", cast=Secret)
+TF_ORG_NAME: str = conf("TF_ORG_NAME", cast=Secret)
+TF_IAM_USERNAME: str = conf("TF_IAM_USERNAME", cast=Secret)

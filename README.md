@@ -3,6 +3,10 @@
 requirements.txt -> used in Chalice packaging
 vendor-requirements.txt -> used by scripts/vendor-c-libs.sh
 
+# TODO
+
+1. post datadog event when executed
+
 Example .chalice/config.json
 
 ```json

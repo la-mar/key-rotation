@@ -1,18 +1,5 @@
 import math
-from typing import Any, List, Union
-
-
-def ensure_list(value: Any) -> List[Any]:
-    if not issubclass(type(value), list):
-        return [value]
-    return value
-
-
-def reduce(values: List) -> Union[List[Any], Any]:
-    """ Reduce a list to a scalar if length == 1 """
-    while isinstance(values, list) and len(values) == 1:
-        values = values[0]
-    return values
+from typing import Union
 
 
 def hf_size(size_bytes: Union[str, int]) -> str:

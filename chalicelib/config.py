@@ -53,5 +53,5 @@ DATADOG_DEFAULT_TAGS: Dict[str, Optional[str]] = {
 
 
 TF_TOKEN: Optional[Secret] = conf("TF_TOKEN", cast=Secret)
-TF_ORG_NAME: str = conf("TF_ORG_NAME", cast=Secret)
-TF_IAM_USERNAME: str = conf("TF_IAM_USERNAME", cast=Secret)
+TF_ORG_NAME: str = conf("TF_ORG_NAME", cast=str)
+TF_IAM_USERNAME: str = conf("TF_IAM_USERNAME", cast=str)

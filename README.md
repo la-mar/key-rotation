@@ -1,5 +1,8 @@
 # key-rotation
 
+requirements.txt -> used in Chalice packaging
+vendor-requirements.txt -> used by scripts/vendor-c-libs.sh
+
 Example .chalice/config.json
 
 ```json
@@ -10,8 +13,11 @@ Example .chalice/config.json
   "lambda_timeout": 900,
   "reserved_concurrency": 1,
   "api_gateway_stage": "api",
+  "manage_iam_role": false,
+  "iam_role_arn": "arn:aws:iam::AWS_ACCOUNT_ID_HERE:role/key-rotation-role",
   "environment_variables": {
-    "PYTHONPATH": "./chalicelib:./:$PYTHONPATH"
+    "PYTHONPATH": "./chalicelib:./:$PYTHONPATH",
+    "APP_NAME": "key-rotation"
   },
   "subnet_ids": [
     "subnet-example-1",

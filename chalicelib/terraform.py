@@ -4,11 +4,8 @@ from typing import Dict, Optional, Union
 
 import config as conf
 import httpx
-import loggers
 import pandas as pd
 from key_rotation import RotationManager
-
-loggers.config(20)
 
 logger = logging.getLogger(__name__)
 

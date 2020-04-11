@@ -19,7 +19,6 @@ def get_project_meta() -> dict:
 account_id = boto3.client("sts").get_caller_identity().get("Account")
 ssm_kms_key = os.getenv("SSM_KMS_KEY")
 secrets_kms_key = os.getenv("SECRETS_KMS_KEY")
-docker_secret_id = os.getenv("DOCKER_SECRET_ID")
 
 
 pkg_meta = get_project_meta()
@@ -46,6 +45,7 @@ trust_policy = {
 
 policy_name = f"{project}-policy"
 policy_arn = f"arn:aws:iam::{account_id}:policy/{policy_name}"
+
 policy = {
     "Version": "2012-10-17",
     "Statement": [
@@ -70,10 +70,7 @@ policy = {
         {
             "Effect": "Allow",
             "Action": ["kms:Decrypt", "secretsmanager:GetSecretValue"],
-            "Resource": [
-                f"arn:aws:secretsmanager:us-east-1:{account_id}:secret:{docker_secret_id}",
-                f"arn:aws:kms:us-east-1:{account_id}:key/{secrets_kms_key}",
-            ],
+            "Resource": [f"arn:aws:kms:us-east-1:{account_id}:key/{secrets_kms_key}"],
         },
         {
             "Effect": "Allow",

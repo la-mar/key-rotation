@@ -69,11 +69,6 @@ policy = {
         },
         {
             "Effect": "Allow",
-            "Action": ["kms:Decrypt", "secretsmanager:GetSecretValue"],
-            "Resource": [f"arn:aws:kms:us-east-1:{account_id}:key/{secrets_kms_key}"],
-        },
-        {
-            "Effect": "Allow",
             "Action": [
                 "logs:CreateLogGroup",
                 "logs:CreateLogStream",

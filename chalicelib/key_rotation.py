@@ -136,9 +136,12 @@ class RotationManager:
 
 if __name__ == "__main__":
     import loggers
+    import config as conf
 
     loggers.config(10)
-    self = RotationManager("terraform-cloud")
+    self = RotationManager(conf.TF_IAM_USERNAME)
     self.create_new_credentials()
-    # with RotationManager("terraform-cloud") as rm:
-    #     print(rm.new)
+
+    # use as context manager
+    with RotationManager(conf.TF_IAM_USERNAME) as rm:
+        print(rm.new)

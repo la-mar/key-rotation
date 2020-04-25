@@ -9,6 +9,10 @@ deploy: #export-deps
 	# chmod -R 777 ./chalicelib
 	poetry run chalice deploy --stage ${ENV} --profile ${ENV}
 
+role:
+	python make_role.py
+
+
 export-deps:
 	poetry export -f requirements.txt > requirements.txt --without-hashes
 
@@ -28,8 +32,6 @@ ssm-update:
 	@echo "Updating parameters for ${AWS_ACCOUNT_ID}/${APP_NAME} from .env.production"
 	python3 -c 'import json, os, dotenv; values={k.lower():v for k,v in dotenv.dotenv_values(".env.production").items()}; print(json.dumps(values))' | jq | aws-vault exec ${ENV} -- chamber import ${APP_NAME} -
 
-role:
-	python make_role.py
 
 invoke:
 	chalice invoke -n terraform-cloud --profile ${ENV} --stage ${ENV}

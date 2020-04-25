@@ -1,6 +1,40 @@
 # key-rotation
 
-Dead simple app to rotate AWS security credentials on projects hosted on Terraform Cloud (https://www.hashicorp.com/products/terraform/pricing/).
+Dead simple app to rotate AWS security credentials on projects hosted on Terraform Cloud (https://www.hashicorp.com/products/terraform/) using a scheduled AWS Lambda function.
+
+## Overview
+
+<br>
+Sensitive environment variables are automatically injected into the Lambda's execution
+environment from AWS Parameter Store.
+
+```python
+import ssm
+```
+
+<br>
+Chalice creates the Lambda function and schedules it in Cloudwatch to run every 24 hours.
+
+```python
+@app.schedule(Rate(24, unit=Rate.HOURS), name="terraform-cloud")
+def rotate_terraform_keys(event):
+    terraform.rotate_keys()
+
+```
+
+Result: Environment variables updated in your Terraform Cloud project
+
+TF Cloud Project (https://app.terraform.io/):
+![tf-cloud](./assets/tf-cloud.png)
+
+<br>
+While this project is currently setup to only rotate AWS credentials on Terraform Cloud,
+additional third party vendors can be readily added in two steps:
+
+1. Create a new module in the [chalicelib](chalicelib) directory, similar to [chalicelib/terraform.py](chalicelib/terraform.py).
+2. Add a new Chalice function to [app.py](app.py) to instruct Chalice to create and schedule the new Lambda function during the next deployment.
+
+<br>
 
 ## Deployment
 
